@@ -17,7 +17,7 @@ module.exports = function Noti(app, conf) {
   const { userModel = 'profile' } = getConf;
   const mNotification = modelNotification(app, getConf);
   const mUserNotification = modelUserNotification(app, getConf);
-  const mProfile = app.service('Mongoose').model(userModel);
+  const mUser = app.service('Mongoose').model(userModel);
   const Apn = app.service('Apn');
   const Gcm = app.service('Gcm');
 
@@ -35,7 +35,7 @@ module.exports = function Noti(app, conf) {
         Object.assign(query, { device: { $exists: true } });
       }
 
-      return mProfile.findInBatches(query, options, (err, docs, next, count, docsRemaining) => {
+      return mUser.findInBatches(query, options, (err, docs, next, count, docsRemaining) => {
         batchHandler(err, docs, next, count, docsRemaining);
       });
     },
