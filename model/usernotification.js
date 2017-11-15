@@ -1,6 +1,7 @@
 module.exports = (app, getConf) => {
   const Plugin = app.service('Plugin');
   const mongoose = app.service('Mongoose');
+  const { Validate } = app.service('System');
   const { Schema } = mongoose;
   const { ObjectId, Mixed } = mongoose.Schema.Types;
   const { userModel } = getConf;
@@ -17,8 +18,9 @@ module.exports = (app, getConf) => {
 
   Plugin.plugins(schema);
 
-  // { owner, attributes, rules, adminSearch, apiSearch }
   schema.r2options = app.service('model/_options/usernotification') || {};
+  const { attributes, rules } = schema.r2options;
+  Validate(schema, { attributes, rules });
 
   return mongoose.model('usernotification', schema);
 };
