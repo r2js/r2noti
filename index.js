@@ -77,16 +77,19 @@ module.exports = function Noti(app, conf) {
       return Promise.all(promises);
     },
 
-    // TODO: notification ile ilgili ayarlar modele alınabilir (badge, sound vs)
     sendNotification(service, notification, profiles) {
       let responseData;
+      const { title, badge = 1, sound = 'default', data = {} } = notification;
       return service.send({
-        message: notification.title,
+        message: title,
+        payload: data,
         tokens: this.collectTokens(profiles),
+        badge,
+        sound,
       })
-        .then((data) => {
-          responseData = data;
-          return this.updateUserNotifications(notification, data);
+        .then((sendData) => {
+          responseData = sendData;
+          return this.updateUserNotifications(notification, sendData);
         })
         .then(() => responseData);
     },

@@ -50,11 +50,14 @@ after(dropDatabase);
 
 describe('r2noti', () => {
   it('should save new notification', (done) => {
-    notiService.save({ title: 'test notification' })
+    notiService.save({ title: 'test notification', badge: 2, sound: 'mySound', data: { type: 'new-message', messageId: 1 } })
       .then((data) => {
         expect(data.title).to.equal('test notification');
         expect(data.isScheduled).to.equal(false);
         expect(data.participants.length).to.equal(0);
+        expect(data.badge).to.equal(2);
+        expect(data.sound).to.equal('mySound');
+        expect(data.data).to.deep.equal({ messageId: 1, type: 'new-message' });
         done();
       })
       .catch(done);
@@ -212,7 +215,12 @@ describe('r2noti', () => {
     });
 
     it('should send notifications via saveTrigger, successful', (done) => {
-      notiService.save({ title: 'test notification 101' })
+      notiService.save({
+        title: 'test notification 101',
+        badge: 3,
+        sound: 'mySound2',
+        data: { type: 'new-message', messageId: 2 },
+      })
         .then(data => notiService.saveTrigger(data))
         .then((data) => {
           expect(data).to.deep.equal({ batches: 1 });
@@ -293,6 +301,9 @@ describe('r2noti', () => {
       notiService.save({
         title: 'test notification 102',
         participants: [global['user-test2']._id, global['user-test3']._id],
+        badge: 3,
+        sound: 'mySound2',
+        data: { type: 'new-message', messageId: 2 },
       })
         .then(data => notiService.saveTrigger(data, 1))
         .then((data) => {

@@ -14,6 +14,8 @@ module.exports = (app, getConf) => {
     isScheduled: { type: Boolean, default: false },
     scheduleStatus: { type: String, enum: ['waiting', 'finished'] },
     activatedAt: { type: Date },
+    badge: { type: Number, default: 0 },
+    sound: { type: String },
     data: { type: Mixed },
   }, {
     timestamps: true,
