@@ -21,8 +21,8 @@ module.exports = (app, getConf) => {
     timestamps: true,
   });
 
-  schema.virtual('hookEnabled').set(function (value) {
-    this._hookEnabled = value;
+  schema.virtual('hookDisabled').set(function (value) {
+    this._hookDisabled = value || false;
   });
 
   schema.pre('save', function (next) {
@@ -31,7 +31,7 @@ module.exports = (app, getConf) => {
   });
 
   schema.post('save', function (noti) {
-    if (this.wasNew && this._hookEnabled) {
+    if (this.wasNew && !this._hookDisabled) {
       app.service('Noti').saveTrigger(noti);
     }
   });

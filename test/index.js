@@ -50,7 +50,7 @@ after(dropDatabase);
 
 describe('r2noti', () => {
   it('should save new notification', (done) => {
-    notiService.save({ title: 'test notification', badge: 2, sound: 'mySound', data: { type: 'new-message', messageId: 1 } })
+    notiService.save({ title: 'test notification', badge: 2, sound: 'mySound', data: { type: 'new-message', messageId: 1 }, hookDisabled: true })
       .then((data) => {
         expect(data.title).to.equal('test notification');
         expect(data.isScheduled).to.equal(false);
@@ -89,7 +89,7 @@ describe('r2noti', () => {
   it('should bulk insert user notifications', (done) => {
     let profiles;
     let notification;
-    notiService.save({ title: 'test notification 2' })
+    notiService.save({ title: 'test notification 2', hookDisabled: true })
       .then((data) => {
         notification = data;
         return notiService.findProfiles({ batchSize: 6 }, (err, docs, next) => {
@@ -177,7 +177,7 @@ describe('r2noti', () => {
       let profiles;
       let groupedProfiles;
       let notification;
-      notiService.save({ title: 'test notification 3' })
+      notiService.save({ title: 'test notification 3', hookDisabled: true })
         .then((data) => {
           notification = data;
           return notiService.findProfiles({ batchSize: 6 }, (err, docs, next) => {
@@ -220,6 +220,7 @@ describe('r2noti', () => {
         badge: 3,
         sound: 'mySound2',
         data: { type: 'new-message', messageId: 2 },
+        hookDisabled: true,
       })
         .then(data => notiService.saveTrigger(data))
         .then((data) => {
@@ -245,7 +246,7 @@ describe('r2noti', () => {
       let profiles;
       let groupedProfiles;
       let notification;
-      notiService.save({ title: 'test notification 4' })
+      notiService.save({ title: 'test notification 4', hookDisabled: true })
         .then((data) => {
           notification = data;
           return notiService.findProfiles({ batchSize: 6 }, (err, docs, next) => {
@@ -304,6 +305,7 @@ describe('r2noti', () => {
         badge: 3,
         sound: 'mySound2',
         data: { type: 'new-message', messageId: 2 },
+        hookDisabled: true,
       })
         .then(data => notiService.saveTrigger(data, 1))
         .then((data) => {
