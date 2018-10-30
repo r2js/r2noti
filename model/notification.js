@@ -27,12 +27,23 @@ module.exports = (app, getConf) => {
 
   schema.pre('save', function (next) {
     this.wasNew = this.isNew;
+
+    const hookService = app.service('NotificationHook');
+    if (hookService && hookService.preSave) {
+      hookService.preSave(this);
+    }
+
     next();
   });
 
   schema.post('save', function (noti) {
     if (this.wasNew && !this._hookDisabled) {
       app.service('Noti').saveTrigger(noti);
+    }
+
+    const hookService = app.service('NotificationHook');
+    if (hookService && hookService.postSave) {
+      hookService.postSave(this, noti);
     }
   });
 

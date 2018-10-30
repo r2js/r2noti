@@ -16,6 +16,24 @@ module.exports = (app, getConf) => {
     timestamps: true,
   });
 
+  schema.pre('save', function (next) {
+    this.wasNew = this.isNew;
+
+    const hookService = app.service('UserNotificationHook');
+    if (hookService && hookService.preSave) {
+      hookService.preSave(this);
+    }
+
+    next();
+  });
+
+  schema.post('save', function (noti) {
+    const hookService = app.service('UserNotificationHook');
+    if (hookService && hookService.postSave) {
+      hookService.postSave(this, noti);
+    }
+  });
+
   Plugin.plugins(schema);
 
   schema.r2options = app.service('model/_options/usernotification') || {};
