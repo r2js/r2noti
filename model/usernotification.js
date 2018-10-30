@@ -35,6 +35,13 @@ module.exports = (app, getConf) => {
     }
   });
 
+  schema.post('remove', function (noti) {
+    const hookService = app.service('UserNotificationHook');
+    if (hookService && hookService.postRemove) {
+      hookService.postRemove(noti);
+    }
+  });
+
   Plugin.plugins(schema);
 
   schema.r2options = app.service('model/_options/usernotification') || {};
