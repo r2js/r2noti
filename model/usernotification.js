@@ -12,6 +12,7 @@ module.exports = (app, getConf) => {
     token: { type: String },
     activatedAt: { type: Date },
     serviceError: { type: Mixed },
+    status: { type: String },
   }, {
     timestamps: true,
   });
@@ -27,10 +28,10 @@ module.exports = (app, getConf) => {
     next();
   });
 
-  schema.post('save', function (noti) {
+  schema.post('update', function (noti) {
     const hookService = app.service('UserNotificationHook');
-    if (hookService && hookService.postSave) {
-      hookService.postSave(this, noti);
+    if (hookService && hookService.postUpdate) {
+      hookService.postUpdate(this, noti);
     }
   });
 

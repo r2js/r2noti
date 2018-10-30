@@ -103,12 +103,13 @@ module.exports = function Noti(app, conf) {
 
       message.map((item) => {
         const { token, error } = item;
-        if (error) {
-          promises.push(mUserNotification.update({
-            notification: notification._id,
-            token,
-          }, { serviceError: error }));
-        }
+        promises.push(mUserNotification.update({
+          notification: notification._id,
+          token,
+        }, error ?
+          { serviceError: error.message || error, status: 'error' } :
+          { status: 'success' }
+        ));
         return item;
       });
 
