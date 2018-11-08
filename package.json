@@ -1,7 +1,7 @@
 {
   "name": "r2noti",
   "description": "",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": "Selçuk Fatih Sevinç",
   "license": "MIT",
   "engines": {
@@ -20,7 +20,7 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
     "mocha": "^3.2.0",
-    "r2apn": "^1.0.0",
+    "r2apn": "^1.0.3",
     "r2base": "^1.0.17",
     "r2gcm": "^1.0.1",
     "r2mongoose": "^1.0.5",

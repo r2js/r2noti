@@ -79,7 +79,8 @@ module.exports = function Noti(app, conf) {
 
     sendNotification(service, notification, profiles) {
       let responseData;
-      const { title, badge = 1, sound = 'default', data = {} } = notification;
+      const { title, badge = 1, sound = 'default', data = {}, _id } = notification;
+      Object.assign(data, { notId: _id });
       return service.send({
         message: title,
         payload: data,
