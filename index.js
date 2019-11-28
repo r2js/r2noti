@@ -14,7 +14,7 @@ module.exports = function Noti(app, conf) {
     return false;
   }
 
-  const { userModel = 'profile' } = getConf;
+  const { userModel = 'profile', service: serviceName } = getConf;
   const mNotification = modelNotification(app, getConf);
   const mUserNotification = modelUserNotification(app, getConf);
   const mUser = app.service('Mongoose').model(userModel);
@@ -61,6 +61,12 @@ module.exports = function Noti(app, conf) {
     send(notification, groupedProfiles) {
       const promises = [];
       const { ios, android } = groupedProfiles;
+
+      if (serviceName) {
+        const profiles = (ios || []).concat(android || []);
+        promises.push(this.sendNotification(app.service(serviceName), notification, profiles));
+        return Promise.all(promises);
+      }
 
       if (ios) {
         promises.push(this.sendNotification(Apn, notification, ios));
