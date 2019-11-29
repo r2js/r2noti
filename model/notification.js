@@ -4,7 +4,7 @@ module.exports = (app, getConf) => {
   const { Validate } = app.service('System');
   const { Schema } = mongoose;
   const { ObjectId, Mixed } = mongoose.Schema.Types;
-  const { userModel } = getConf;
+  const { userModel, tokenBatch = 1000 } = getConf;
 
   const schema = Schema({
     profile: { type: ObjectId, ref: userModel, index: true },
@@ -38,7 +38,7 @@ module.exports = (app, getConf) => {
 
   schema.post('save', function (noti) {
     if (this.wasNew && !this._hookDisabled) {
-      app.service('Noti').saveTrigger(noti);
+      app.service('Noti').saveTrigger(noti, tokenBatch);
     }
 
     const hookService = app.service('NotificationHook');
